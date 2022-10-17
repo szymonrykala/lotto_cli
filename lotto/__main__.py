@@ -1,9 +1,7 @@
-from results_manager import LottoResultsManager
-from analyzer import LottoResultsAnalyzer
-
+from cli import app
 
 
 
 
 if __name__ == "__main__":
-    print("helloo")
+    app()

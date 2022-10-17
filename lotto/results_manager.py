@@ -10,10 +10,15 @@ class LottoResultsManager():
         "path": "/dl.txt"
     }
 
-    FILE_PATH = path.abspath('lotto/data/wyniki.txt')
+    __FILE_PATH:str
 
-    def __init__(self) -> None:
-        self.data: tuple[LottoDraw] = ()
+    def __init__(self, file_path='./results.txt') -> None:
+        self.__FILE_PATH = path.abspath(file_path)
+        self.__lotto_results: tuple[LottoDraw] = ()
+
+    @property
+    def results(self):
+        return self.__lotto_results
 
     def load_results(self) -> None:
         if self.__file_is_up_to_date():
@@ -21,11 +26,11 @@ class LottoResultsManager():
         else:
             results = self.__get_results_from_internet()
 
-        self.data = self.__parse_data(results)
+        self.__lotto_results = self.__parse_data(results)
 
     def __file_is_up_to_date(self, time_span: int = 24) -> bool:
-        if path.exists(self.FILE_PATH):
-            modified = path.getmtime(self.FILE_PATH)
+        if path.exists(self.__FILE_PATH):
+            modified = path.getmtime(self.__FILE_PATH)
             now = datetime.now().timestamp()
 
             return now > (modified + time_span * 3600)
@@ -33,7 +38,7 @@ class LottoResultsManager():
             return False
 
     def __get_results_from_file(self) -> str:
-        with open(self.FILE_PATH, newline='\n', encoding='UTF8') as file:
+        with open(self.__FILE_PATH, newline='\n', encoding='UTF8') as file:
             data = file.read()
             file.close()
             return data
@@ -53,7 +58,7 @@ class LottoResultsManager():
         return data
 
     def __save_to_file(self, data: str) -> None:
-        with open(self.FILE_PATH, 'w+', newline='', encoding='UTF8') as file:
+        with open(self.__FILE_PATH, 'w+', newline='', encoding='UTF8') as file:
             file.write(data.strip())
             file.close()
 
