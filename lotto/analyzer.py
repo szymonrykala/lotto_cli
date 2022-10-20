@@ -28,7 +28,7 @@ class LottoResultsAnalyzer():
     def __count_occurence_of_numbers(self, draws_count=__INF):
         numbers = []
         for row in self.__results[-draws_count:]:
-            numbers.extend(row.numbers)
+            numbers += row.numbers
 
         counted = Counter(numbers)
         return sorted(counted.items(), key=lambda x: -x[1])
