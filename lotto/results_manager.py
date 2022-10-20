@@ -33,7 +33,7 @@ class LottoResultsManager():
             modified = path.getmtime(self.__FILE_PATH)
             now = datetime.now().timestamp()
 
-            return now > (modified + time_span * 3600)
+            return now < (modified + time_span * 3600)
         else:
             return False
 
